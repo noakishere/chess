@@ -55,19 +55,19 @@ function onChange (oldPos, newPos)
   console.log('New Position: ' + newPos);
 }
 
-function makeRandomMove() {
-  var possibleMoves = game.moves()
+// function makeRandomMove() {
+//   var possibleMoves = game.moves()
 
-  // exit if the game is over
-  if (game.game_over()) return
+//   // exit if the game is over
+//   if (game.game_over()) return
 
-  //I dont understand this?
-  var randomIdx = Math.floor(Math.random() * possibleMoves.length)
-  game.move(possibleMoves[randomIdx])
-  board.position(game.fen())
+//   //I dont understand this?
+//   var randomIdx = Math.floor(Math.random() * possibleMoves.length)
+//   game.move(possibleMoves[randomIdx])
+//   board.position(game.fen())
 
-  window.setTimeout(makeRandomMove, 500)
-}
+//   window.setTimeout(makeRandomMove, 500)
+// }
 
 
 

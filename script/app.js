@@ -233,7 +233,7 @@ var getBestMove = function (game) {
   var bestMove = minimaxRoot(depth, game, true);
   var d2 = new Date().getTime();
     var moveTime = (d2 - d);
-
+    $('#position-count').text(positionCount);
     $('#time').text(moveTime/1000 + 's');
   return bestMove;
 };

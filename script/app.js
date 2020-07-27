@@ -218,6 +218,8 @@ var makeBestMove = function() {
 
   if(game.game_over())
     alert('Game OVER');
+
+  window.setTimeout(makeBestMove, 500);
 };
 
 var positionCount;
@@ -322,15 +324,17 @@ var greySquare = function(square) {
 var config = {
   draggable: true,
   onChange: onChange,
-  onDragStart: onDragStart,
-  onDrop: onDrop,
+  // onDragStart: onDragStart,
+  // onDrop: onDrop,
   onMouseoutSquare: onMouseoutSquare,
   onMouseoverSquare: onMouseoverSquare, 
-  onSnapEnd, onSnapEnd
+  onSnapEnd, onSnapEnd,
+  position: 'start'
 };
 
 board = Chessboard('board', config)
 
+window.setTimeout(makeBestMove, 500);
 
 $('#startBtn').on('click', board.start);
 $('#clearBtn').on('click', board.clear);

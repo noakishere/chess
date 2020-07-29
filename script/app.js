@@ -17,10 +17,19 @@ var minimaxRoot = function(depth, game, isMaximisingPlayer){
     var value = minimax(depth - 1, game, -10000, 10000, !isMaximisingPlayer);
     game.undo();
 
-    if(value >= bestMove)
+    if(value > bestMove)
     {
       bestMove = value;
       bestMoveFound = newGameMove;
+    }
+
+    else if(value == bestMove)
+    {
+      if(Math.floor(Math.random() * 2) > 0.5)
+      {
+        bestMove = value;
+        bestMoveFound = newGameMove;
+      }
     }
   }
 

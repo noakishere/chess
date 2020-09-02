@@ -2,8 +2,31 @@
 var board,
    game = new Chess();
 
-//AI calculation
 
+
+//Array stores the possible options each turn
+let numberOfPositions= [];
+
+//Average of numberOfPositions
+let averageNumberOfPosition = function() {
+
+  var total = 0;
+  for(var index in numberOfPositions)
+  {
+    total += numberOfPositions[index];
+    console.log(numberOfPositions[index] + "hi")
+  }
+
+  var result = total / numberOfPositions.length;
+  console.log("this is the average " + result);
+  return result;
+  
+};
+
+//Turns before the end of the game
+let turnsBeforeEnd;
+
+//AI calculation
 var minimaxRoot = function(depth, game, isMaximisingPlayer){
   
   var newGameMoves = game.moves();
@@ -32,7 +55,8 @@ var minimaxRoot = function(depth, game, isMaximisingPlayer){
       }
     }
   }
-
+  console.log(bestMove + "  Best")
+  console.log(bestMoveFound + "  BESTMV")
   return bestMoveFound;
 }
 
@@ -88,7 +112,7 @@ var evaluateBoard = function (board) {
       totalEvaluation = totalEvaluation + getPieceValue(board[i][j], i, j);
     }
   }
-
+  //console.log(totalEvaluation)
   return totalEvaluation;
 };
 
@@ -226,7 +250,7 @@ var makeBestMove = function() {
   // renderMoveHistory(game.history());
 
   if(game.game_over())
-    alert('Game OVER');
+    $("result").text("Game over");
 
   window.setTimeout(makeBestMove, 500);
 };
@@ -235,7 +259,7 @@ var positionCount;
 //uses calculateBestMove to return the value to makeBestMove
 var getBestMove = function (game) {
   if(game.game_over()) 
-    alert('Game OVER');
+  $("result").text("Game over");
 
   positionCount = 0;
   var depth =3;
@@ -243,9 +267,20 @@ var getBestMove = function (game) {
   var d = new Date().getTime();
   var bestMove = minimaxRoot(depth, game, true);
   var d2 = new Date().getTime();
-    var moveTime = (d2 - d);
-    $('#position-count').text(positionCount);
-    $('#time').text(moveTime/1000 + 's');
+  var moveTime = (d2 - d);
+
+  $('#position-count').text(positionCount);
+
+  numberOfPositions.push(positionCount);
+  console.log(numberOfPositions);
+  averageNumberOfPosition();
+
+  if (game.move.captured)
+    console.log("HELLO")
+
+  turnsBeforeEnd = numberOfPositions.length;    
+  console.log(turnsBeforeEnd+" TURSN");
+  $('#time').text(moveTime/1000 + 's');
   return bestMove;
 };
 
@@ -256,7 +291,7 @@ function makeRandomMove() {
 
   //game over
   if(possibleMoves.length == 0)
-    return alert("It's done. Pathetic.");
+    $("result").text("Game over");
 
     //I dont understand this?
   var randomIdx = Math.floor(Math.random() * possibleMoves.length);
@@ -290,8 +325,8 @@ function onSnapEnd(){
 
 function onChange (oldPos, newPos)
 {
-  console.log('Old position: ' + Chessboard.objToFen(oldPos));
-  console.log('New Position: ' + newPos);
+  //console.log('Old position: ' + Chessboard.objToFen(oldPos));
+  //console.log('New Position: ' + newPos);
 }
 
 
@@ -343,15 +378,13 @@ var config = {
 
 board = Chessboard('board', config)
 
-window.setTimeout(makeBestMove, 500);
 
-$('#startBtn').on('click', board.start);
-$('#clearBtn').on('click', board.clear);
-$('#flip').on('click', board.flip);
+
+$('#startBtn').on('click', function(){
+  window.setTimeout(makeBestMove, 500);
+});
 $('#rndmBtn').on('click',function(){
   board.start();
   window.setTimeout(makeRandomMove, 500);
 });
-$("#undoBtn").click(function(){
-  game.undo();
-});
+
